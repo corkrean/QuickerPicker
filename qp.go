@@ -56,14 +56,23 @@ func naming (x int64) string{
 	return input //returns name x
 }
 
-//with this setup, one person can be picked twice
+//randomly picks choice
 func picker(total int64,numberOfPicks int64,nombres [] string )[]string{
-	winners := make([]string, numberOfPicks)
+	winners := make([]string, numberOfPicks) //dynamically sized array used to store names of those randomly chosen
 
-	var index int64 = 0
-	for ; index < numberOfPicks ; index++{
-		winners[index] = nombres [rand.Int63n(total)]
-	}
+		var index int64 = 0
+		for ; index < numberOfPicks ; index++{
+			winners[index] = nombres [rand.Int63n(total)]
 
+			//this subloop is used to ensure no duplicate picks
+			var subindex int64 = 0
+			for ; subindex < numberOfPicks ; subindex++{
+				if index != subindex{ //avoids checking the same position in the array against one another
+					if winners[index] == winners[subindex]{ //this will check every existing pick in the array against the new pick
+						index-- //this effectively "redraws" the pick
+					}
+				}
+			}
+		}
 	return winners
 }
